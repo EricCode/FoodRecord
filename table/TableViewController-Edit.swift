@@ -45,8 +45,8 @@ class TableViewController_Edit: UITableViewController {
         timeform.timeStyle = DateFormatter.Style.short
         let time = timeform.string(from: dataPicker.date)
         
-        print("date: \(date)")
-        print("time: \(time)")
+//        print("date: \(date)")
+//        print("time: \(time)")
         
         
 //        dataForm.dateStyle = DateFormatter.NoStyle
