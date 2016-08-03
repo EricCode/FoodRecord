@@ -20,9 +20,14 @@ class MasterViewController: UITableViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
         
-        let notificationName = Notification.Name("message")
-        
+        let notificationName = Notification.Name("message")        
         NotificationCenter.default.addObserver(self, selector: #selector(addArray(noti:)), name: notificationName, object: nil)
+        
+        
+        let notiName = Notification.Name("detailEdit")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.changeDic(noti:)), name: notiName, object: nil)
+        
+        
 //
 //        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
         
@@ -50,6 +55,14 @@ class MasterViewController: UITableViewController {
 //        let indexPath = IndexPath(row: 0, section: 0)
 //        self.tableView.insertRows(at: [indexPath], with: .automatic)
 //    }
+    func changeDic(noti:Notification){
+        let notiDic = noti.userInfo as! Dictionary<String,String>
+        let index = Int(notiDic["index"]!)
+        dicArray[index!] = notiDic
+        
+        self.tableView.reloadData()
+    }
+
     
     func toAddItemPage(_ sender: AnyObject){
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "editTable")
@@ -79,8 +92,8 @@ class MasterViewController: UITableViewController {
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 
-                let dic = dicArray[indexPath.row]
-                
+                var dic = dicArray[indexPath.row]
+                dic["index"] = String(indexPath.row)
                 
                 let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
                 

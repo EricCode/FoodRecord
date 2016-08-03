@@ -41,22 +41,20 @@ class TableViewController_Edit: UITableViewController {
         let date = dateform.string(from: dataPicker.date)
         
         let timeform = DateFormatter()
-        timeform.dateStyle = DateFormatter.Style.none
-        timeform.timeStyle = DateFormatter.Style.short
+        timeform.dateStyle = DateFormatter.Style.medium
+        timeform.timeStyle = DateFormatter.Style.medium
         let time = timeform.string(from: dataPicker.date)
         
-//        print("date: \(date)")
-//        print("time: \(time)")
+        print("date: \(date)")
+        print("time: \(time)")
         
-        
-//        dataForm.dateStyle = DateFormatter.NoStyle
         
         let dic = ["food":self.food.text!, "date":date, "time":time]
         
         let notificationName = Notification.Name("message")
         NotificationCenter.default.post(name: notificationName, object: nil, userInfo: dic)
         
-    self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
         
         
     }
