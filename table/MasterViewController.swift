@@ -18,6 +18,22 @@ class MasterViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        //load file
+        let fileManger = FileManager.default
+        let docUrls = fileManger.urlsForDirectory(.documentDirectory, inDomains: .userDomainMask)
+        let docUrl = docUrls.first
+        let url = try!docUrl?.appendingPathComponent("dicArray.txt")
+        
+        if let array = NSArray(contentsOf: url!){
+            dicArray = array as! Array<Dictionary<String, String>>
+        }
+        
+
+
+        
+        
+        
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
         
         let notificationName = Notification.Name("message")        
@@ -27,12 +43,11 @@ class MasterViewController: UITableViewController {
         let notiName = Notification.Name("detailEdit")
         NotificationCenter.default.addObserver(self, selector: #selector(self.changeDic(noti:)), name: notiName, object: nil)
         
-        
-//
-//        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
-        
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(toAddItemPage(_:)))
-            
+        
+        
+        
+        
         self.navigationItem.rightBarButtonItem = addButton
         if let split = self.splitViewController {
             let controllers = split.viewControllers
@@ -44,6 +59,20 @@ class MasterViewController: UITableViewController {
         self.clearsSelectionOnViewWillAppear = self.splitViewController!.isCollapsed
         super.viewWillAppear(animated)
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // write file
+        let fileManger = FileManager.default
+        let docUrls = fileManger.urlsForDirectory(.documentDirectory, inDomains: .userDomainMask)
+        let docUrl = docUrls.first
+        let url = try!docUrl?.appendingPathComponent("dicArray.txt")
+        (dicArray as NSArray).write(to: url!, atomically: true)
+        
+    }
+    
+    
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -61,6 +90,13 @@ class MasterViewController: UITableViewController {
         dicArray[index!] = notiDic
         
         self.tableView.reloadData()
+        
+        // write file
+        let fileManger = FileManager.default
+        let docUrls = fileManger.urlsForDirectory(.documentDirectory, inDomains: .userDomainMask)
+        let docUrl = docUrls.first
+        let url = try!docUrl?.appendingPathComponent("dicArray.txt")
+        (dicArray as NSArray).write(to: url!, atomically: true)
     }
 
     
@@ -83,6 +119,13 @@ class MasterViewController: UITableViewController {
 //        self.tableView.insertRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
 
         self.tableView.reloadData()
+        
+        // write file
+        let fileManger = FileManager.default
+        let docUrls = fileManger.urlsForDirectory(.documentDirectory, inDomains: .userDomainMask)
+        let docUrl = docUrls.first
+        let url = try!docUrl?.appendingPathComponent("dicArray.txt")
+        (dicArray as NSArray).write(to: url!, atomically: true)
     }
     
 
